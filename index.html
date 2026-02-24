@@ -1,0 +1,1212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ORACLE — AI Finance Intelligence</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:wght@400;700&family=Syne:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #020408;
+    --surface: #080d14;
+    --border: #0f1f35;
+    --accent: #00f5c4;
+    --accent2: #ff3b6b;
+    --accent3: #f0b429;
+    --text: #e8f4f8;
+    --muted: #4a6a80;
+    --grid: rgba(0,245,196,0.04);
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Space Mono', monospace;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Animated grid background */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(var(--grid) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Glow orb */
+  body::after {
+    content: '';
+    position: fixed;
+    top: -20%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 800px;
+    height: 400px;
+    background: radial-gradient(ellipse, rgba(0,245,196,0.06) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container {
+    position: relative;
+    z-index: 1;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  /* HEADER */
+  header {
+    padding: 28px 0 20px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2.4rem;
+    letter-spacing: 6px;
+    color: var(--accent);
+    text-shadow: 0 0 30px rgba(0,245,196,0.5);
+  }
+
+  .logo span { color: var(--text); }
+
+  .tagline {
+    font-size: 0.65rem;
+    color: var(--muted);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-top: 2px;
+  }
+
+  .status-badge {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.7rem;
+    color: var(--accent);
+    letter-spacing: 2px;
+  }
+
+  .pulse {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 10px var(--accent);
+    animation: pulse 2s ease infinite;
+  }
+
+  @keyframes pulse {
+    0%,100% { opacity:1; transform:scale(1); }
+    50% { opacity:0.4; transform:scale(0.8); }
+  }
+
+  /* SEARCH */
+  .search-zone {
+    padding: 48px 0 32px;
+    text-align: center;
+  }
+
+  .search-headline {
+    font-family: 'Syne', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--muted);
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  .big-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    letter-spacing: 4px;
+    line-height: 1;
+    margin-bottom: 32px;
+  }
+
+  .big-title span { color: var(--accent); }
+
+  .search-bar {
+    display: flex;
+    gap: 12px;
+    max-width: 640px;
+    margin: 0 auto;
+  }
+
+  .search-bar input {
+    flex: 1;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 16px 20px;
+    color: var(--text);
+    font-family: 'Space Mono', monospace;
+    font-size: 1rem;
+    letter-spacing: 2px;
+    outline: none;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    text-transform: uppercase;
+  }
+
+  .search-bar input::placeholder { color: var(--muted); font-size: 0.8rem; }
+
+  .search-bar input:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 20px rgba(0,245,196,0.15);
+  }
+
+  .btn-analyze {
+    background: var(--accent);
+    color: var(--bg);
+    border: none;
+    border-radius: 4px;
+    padding: 16px 28px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.2rem;
+    letter-spacing: 3px;
+    cursor: pointer;
+    transition: all 0.3s;
+    white-space: nowrap;
+  }
+
+  .btn-analyze:hover {
+    background: #00ffcd;
+    box-shadow: 0 0 30px rgba(0,245,196,0.4);
+    transform: translateY(-2px);
+  }
+
+  .btn-analyze:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  .quick-picks {
+    margin-top: 16px;
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .chip {
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    padding: 6px 14px;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--muted);
+    cursor: pointer;
+    letter-spacing: 2px;
+    transition: all 0.2s;
+  }
+
+  .chip:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: rgba(0,245,196,0.05);
+  }
+
+  /* LOADING */
+  .loading-zone {
+    display: none;
+    text-align: center;
+    padding: 60px 0;
+  }
+
+  .loading-zone.active { display: block; }
+
+  .scanner {
+    width: 120px;
+    height: 120px;
+    margin: 0 auto 24px;
+    position: relative;
+  }
+
+  .scanner-ring {
+    position: absolute;
+    inset: 0;
+    border: 2px solid transparent;
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+
+  .scanner-ring:nth-child(2) {
+    inset: 12px;
+    border-top-color: var(--accent2);
+    animation-duration: 1.5s;
+    animation-direction: reverse;
+  }
+
+  .scanner-ring:nth-child(3) {
+    inset: 24px;
+    border-top-color: var(--accent3);
+    animation-duration: 2s;
+  }
+
+  .scanner-dot {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 8px; height: 8px;
+    background: var(--accent);
+    border-radius: 50%;
+    box-shadow: 0 0 20px var(--accent);
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .loading-text {
+    font-size: 0.75rem;
+    color: var(--muted);
+    letter-spacing: 3px;
+    animation: blink 1.5s ease infinite;
+  }
+
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+  /* RESULTS */
+  .results {
+    display: none;
+    animation: fadeUp 0.6s ease forwards;
+  }
+
+  .results.active { display: block; }
+
+  @keyframes fadeUp {
+    from { opacity:0; transform:translateY(30px); }
+    to { opacity:1; transform:translateY(0); }
+  }
+
+  /* VERDICT BANNER */
+  .verdict-banner {
+    margin-bottom: 24px;
+    border-radius: 6px;
+    padding: 24px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .verdict-banner::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    opacity: 0.08;
+  }
+
+  .verdict-banner.bullish {
+    border: 1px solid var(--accent);
+    background: linear-gradient(135deg, rgba(0,245,196,0.05) 0%, transparent 100%);
+  }
+
+  .verdict-banner.bearish {
+    border: 1px solid var(--accent2);
+    background: linear-gradient(135deg, rgba(255,59,107,0.05) 0%, transparent 100%);
+  }
+
+  .verdict-banner.neutral {
+    border: 1px solid var(--accent3);
+    background: linear-gradient(135deg, rgba(240,180,41,0.05) 0%, transparent 100%);
+  }
+
+  .verdict-label {
+    font-size: 0.65rem;
+    color: var(--muted);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  .verdict-signal {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 3rem;
+    letter-spacing: 6px;
+    line-height: 1;
+  }
+
+  .bullish .verdict-signal { color: var(--accent); text-shadow: 0 0 30px rgba(0,245,196,0.5); }
+  .bearish .verdict-signal { color: var(--accent2); text-shadow: 0 0 30px rgba(255,59,107,0.5); }
+  .neutral .verdict-signal { color: var(--accent3); text-shadow: 0 0 30px rgba(240,180,41,0.5); }
+
+  .verdict-score-ring {
+    position: relative;
+    width: 90px;
+    height: 90px;
+    flex-shrink: 0;
+  }
+
+  .verdict-score-ring svg {
+    transform: rotate(-90deg);
+    width: 90px; height: 90px;
+  }
+
+  .score-track {
+    fill: none;
+    stroke: var(--border);
+    stroke-width: 6;
+  }
+
+  .score-fill {
+    fill: none;
+    stroke-width: 6;
+    stroke-linecap: round;
+    transition: stroke-dashoffset 1.5s ease;
+  }
+
+  .score-number {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.6rem;
+    letter-spacing: 1px;
+  }
+
+  /* GRID LAYOUT */
+  .dashboard-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+
+  .dashboard-grid-wide {
+    display: grid;
+    grid-template-columns: 1.6fr 1fr;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+
+  @media (max-width: 768px) {
+    .dashboard-grid, .dashboard-grid-wide { grid-template-columns: 1fr; }
+  }
+
+  /* CARD */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 20px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    opacity: 0.4;
+  }
+
+  .card-label {
+    font-size: 0.6rem;
+    color: var(--muted);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .card-label-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+
+  .big-number {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2.2rem;
+    letter-spacing: 2px;
+    line-height: 1;
+  }
+
+  .big-number.up { color: var(--accent); }
+  .big-number.down { color: var(--accent2); }
+  .big-number.neutral { color: var(--accent3); }
+
+  .sub-number {
+    font-size: 0.75rem;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+
+  /* SIGNAL BARS */
+  .signal-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .signal-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .signal-name {
+    font-size: 0.65rem;
+    color: var(--muted);
+    letter-spacing: 1px;
+    width: 80px;
+    flex-shrink: 0;
+  }
+
+  .signal-bar-track {
+    flex: 1;
+    height: 4px;
+    background: var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .signal-bar-fill {
+    height: 100%;
+    border-radius: 2px;
+    transition: width 1.5s ease;
+    width: 0;
+  }
+
+  .signal-val {
+    font-size: 0.65rem;
+    letter-spacing: 1px;
+    width: 36px;
+    text-align: right;
+    flex-shrink: 0;
+  }
+
+  /* PREDICTION TIMELINE */
+  .prediction-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .prediction-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 12px;
+    background: rgba(255,255,255,0.02);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    transition: border-color 0.2s;
+  }
+
+  .prediction-item:hover { border-color: var(--accent); }
+
+  .pred-time {
+    font-size: 0.65rem;
+    color: var(--muted);
+    letter-spacing: 2px;
+    width: 60px;
+    flex-shrink: 0;
+  }
+
+  .pred-arrow {
+    font-size: 1.2rem;
+    flex-shrink: 0;
+  }
+
+  .pred-price {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.3rem;
+    letter-spacing: 2px;
+    flex: 1;
+  }
+
+  .pred-confidence {
+    font-size: 0.65rem;
+    color: var(--muted);
+    text-align: right;
+  }
+
+  .pred-confidence span {
+    display: block;
+    font-size: 0.8rem;
+    color: var(--text);
+    font-weight: 700;
+  }
+
+  /* AI ANALYSIS TEXT */
+  .analysis-text {
+    font-size: 0.78rem;
+    line-height: 1.9;
+    color: #a0c0cc;
+    letter-spacing: 0.5px;
+  }
+
+  .analysis-text strong {
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  /* RISK METER */
+  .risk-meter {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .risk-track {
+    position: relative;
+    height: 10px;
+    background: linear-gradient(90deg, #00f5c4, #f0b429, #ff3b6b);
+    border-radius: 5px;
+  }
+
+  .risk-needle {
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 16px; height: 16px;
+    background: white;
+    border-radius: 50%;
+    box-shadow: 0 0 12px rgba(255,255,255,0.6);
+    transition: left 1.5s cubic-bezier(0.34,1.56,0.64,1);
+  }
+
+  .risk-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.6rem;
+    color: var(--muted);
+    letter-spacing: 2px;
+  }
+
+  /* SENTIMENT GAUGE */
+  .sentiment-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .sentiment-row:last-child { border-bottom: none; }
+
+  .sentiment-icon { font-size: 1.2rem; width: 28px; }
+
+  .sentiment-source {
+    font-size: 0.65rem;
+    color: var(--muted);
+    letter-spacing: 1px;
+    flex: 1;
+  }
+
+  .sentiment-bar-outer {
+    width: 100px;
+    height: 6px;
+    background: var(--border);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+
+  .sentiment-bar-inner {
+    height: 100%;
+    border-radius: 3px;
+    transition: width 1.5s ease;
+    width: 0;
+  }
+
+  .sentiment-pct {
+    font-size: 0.7rem;
+    letter-spacing: 1px;
+    width: 36px;
+    text-align: right;
+  }
+
+  /* KEY LEVELS */
+  .levels-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  .level-item {
+    padding: 12px;
+    background: rgba(255,255,255,0.02);
+    border-radius: 4px;
+    border-left: 2px solid var(--border);
+  }
+
+  .level-item.resistance { border-color: var(--accent2); }
+  .level-item.support { border-color: var(--accent); }
+
+  .level-type {
+    font-size: 0.6rem;
+    color: var(--muted);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+
+  .level-price {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.3rem;
+    letter-spacing: 2px;
+  }
+
+  .resistance .level-price { color: var(--accent2); }
+  .support .level-price { color: var(--accent); }
+
+  /* FOOTER */
+  footer {
+    margin-top: 60px;
+    padding: 24px 0;
+    border-top: 1px solid var(--border);
+    text-align: center;
+    font-size: 0.6rem;
+    color: var(--muted);
+    letter-spacing: 2px;
+  }
+
+  .disclaimer {
+    margin-top: 8px;
+    font-size: 0.55rem;
+    color: #2a4050;
+    letter-spacing: 1px;
+    max-width: 600px;
+    margin: 8px auto 0;
+  }
+
+  /* TICKER TAPE */
+  .ticker-tape {
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    overflow: hidden;
+    padding: 10px 0;
+    margin-bottom: 32px;
+  }
+
+  .ticker-inner {
+    display: flex;
+    gap: 48px;
+    animation: ticker 30s linear infinite;
+    white-space: nowrap;
+    width: max-content;
+  }
+
+  @keyframes ticker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+  .ticker-item {
+    font-size: 0.7rem;
+    letter-spacing: 2px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .ticker-sym { color: var(--text); font-weight: 700; }
+  .ticker-price { color: var(--muted); }
+  .ticker-chg.up { color: var(--accent); }
+  .ticker-chg.down { color: var(--accent2); }
+
+  .separator {
+    color: var(--border);
+    font-size: 0.5rem;
+  }
+
+</style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <div>
+      <div class="logo">ORACLE<span>.AI</span></div>
+      <div class="tagline">Quantitative Intelligence Engine</div>
+    </div>
+    <div class="status-badge">
+      <div class="pulse"></div>
+      AI ENGINE LIVE
+    </div>
+  </header>
+</div>
+
+<!-- Ticker Tape -->
+<div class="ticker-tape">
+  <div class="ticker-inner" id="tickerInner">
+    <!-- filled by JS -->
+  </div>
+</div>
+
+<div class="container">
+  <div class="search-zone">
+    <div class="search-headline">Powered by Generative AI</div>
+    <div class="big-title">ANALYZE ANY <span>STOCK</span><br>OR <span>CRYPTO</span></div>
+    <div class="search-bar">
+      <input type="text" id="tickerInput" placeholder="Enter ticker: AAPL, BTC, ETH, TSLA..." maxlength="10" />
+      <button class="btn-analyze" id="analyzeBtn" onclick="runAnalysis()">ANALYZE</button>
+    </div>
+    <div class="quick-picks">
+      <div class="chip" onclick="quickPick('AAPL')">AAPL</div>
+      <div class="chip" onclick="quickPick('BTC')">BTC</div>
+      <div class="chip" onclick="quickPick('ETH')">ETH</div>
+      <div class="chip" onclick="quickPick('TSLA')">TSLA</div>
+      <div class="chip" onclick="quickPick('NVDA')">NVDA</div>
+      <div class="chip" onclick="quickPick('SOL')">SOL</div>
+      <div class="chip" onclick="quickPick('MSFT')">MSFT</div>
+      <div class="chip" onclick="quickPick('AMZN')">AMZN</div>
+    </div>
+  </div>
+
+  <!-- Loading -->
+  <div class="loading-zone" id="loadingZone">
+    <div class="scanner">
+      <div class="scanner-ring"></div>
+      <div class="scanner-ring"></div>
+      <div class="scanner-ring"></div>
+      <div class="scanner-dot"></div>
+    </div>
+    <div class="loading-text" id="loadingText">INITIALIZING ORACLE ENGINE...</div>
+  </div>
+
+  <!-- Results -->
+  <div class="results" id="resultsZone">
+
+    <!-- Verdict Banner -->
+    <div class="verdict-banner" id="verdictBanner">
+      <div>
+        <div class="verdict-label">AI SIGNAL</div>
+        <div class="verdict-signal" id="verdictSignal">—</div>
+        <div class="sub-number" id="verdictSub">—</div>
+      </div>
+      <div>
+        <div class="verdict-label" style="text-align:center; margin-bottom:6px;">CONFIDENCE</div>
+        <div class="verdict-score-ring">
+          <svg viewBox="0 0 90 90">
+            <circle class="score-track" cx="45" cy="45" r="38" />
+            <circle class="score-fill" id="scoreFill" cx="45" cy="45" r="38"
+              stroke-dasharray="239"
+              stroke-dashoffset="239" />
+          </svg>
+          <div class="score-number" id="scoreNumber">0</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Row 1: Price, Change, Volume -->
+    <div class="dashboard-grid" id="statsRow"></div>
+
+    <!-- Row 2: AI Analysis + Predictions -->
+    <div class="dashboard-grid-wide">
+      <div class="card" id="analysisCard">
+        <div class="card-label"><div class="card-label-dot"></div>AI DEEP ANALYSIS</div>
+        <div class="analysis-text" id="analysisText">—</div>
+      </div>
+      <div class="card" id="predictionCard">
+        <div class="card-label"><div class="card-label-dot"></div>PRICE PREDICTIONS</div>
+        <div class="prediction-list" id="predictionList"></div>
+      </div>
+    </div>
+
+    <!-- Row 3: Signals + Sentiment + Risk -->
+    <div class="dashboard-grid">
+      <div class="card">
+        <div class="card-label"><div class="card-label-dot"></div>TECHNICAL SIGNALS</div>
+        <div class="signal-grid" id="signalGrid"></div>
+      </div>
+      <div class="card">
+        <div class="card-label"><div class="card-label-dot"></div>SENTIMENT ANALYSIS</div>
+        <div id="sentimentRows"></div>
+      </div>
+      <div class="card">
+        <div class="card-label"><div class="card-label-dot"></div>RISK ASSESSMENT</div>
+        <div class="risk-meter" id="riskMeter">
+          <div class="risk-track">
+            <div class="risk-needle" id="riskNeedle"></div>
+          </div>
+          <div class="risk-labels">
+            <span>LOW</span><span>MED</span><span>HIGH</span>
+          </div>
+          <div id="riskText" style="font-size:0.7rem; color:var(--muted); line-height:1.7;"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Key Levels -->
+    <div class="card" style="margin-bottom:16px;">
+      <div class="card-label"><div class="card-label-dot"></div>KEY PRICE LEVELS</div>
+      <div class="levels-grid" id="levelsGrid"></div>
+    </div>
+
+  </div>
+</div>
+
+<footer>
+  <div class="container">
+    ORACLE.AI — QUANTITATIVE INTELLIGENCE ENGINE
+    <div class="disclaimer">
+      ⚠ This tool uses AI-generated analysis for educational and informational purposes only. Not financial advice. Always do your own research before making investment decisions. Past performance does not guarantee future results.
+    </div>
+  </div>
+</footer>
+
+<script>
+// Ticker data
+const tickerData = [
+  {sym:'BTC', price:'$94,320', chg:'+2.4%', up:true},
+  {sym:'ETH', price:'$3,280', chg:'-0.8%', up:false},
+  {sym:'AAPL', price:'$192.53', chg:'+1.2%', up:true},
+  {sym:'NVDA', price:'$875.40', chg:'+3.1%', up:true},
+  {sym:'TSLA', price:'$238.70', chg:'-1.5%', up:false},
+  {sym:'SOL', price:'$178.90', chg:'+4.2%', up:true},
+  {sym:'MSFT', price:'$415.20', chg:'+0.6%', up:true},
+  {sym:'AMZN', price:'$189.40', chg:'+0.9%', up:true},
+  {sym:'META', price:'$524.80', chg:'+1.8%', up:true},
+  {sym:'DOGE', price:'$0.182', chg:'-2.3%', up:false},
+  {sym:'XRP', price:'$0.637', chg:'+5.1%', up:true},
+  {sym:'SPY', price:'$524.90', chg:'+0.3%', up:true},
+];
+
+function buildTicker() {
+  const inner = document.getElementById('tickerInner');
+  const items = [...tickerData, ...tickerData];
+  inner.innerHTML = items.map(t => `
+    <div class="ticker-item">
+      <span class="ticker-sym">${t.sym}</span>
+      <span class="ticker-price">${t.price}</span>
+      <span class="ticker-chg ${t.up?'up':'down'}">${t.chg}</span>
+      <span class="separator">◆</span>
+    </div>
+  `).join('');
+}
+buildTicker();
+
+// Asset database for realistic AI analysis
+const assetData = {
+  AAPL: {
+    name: 'Apple Inc.', type: 'stock', price: 192.53, change: +1.24, changePct: +0.65,
+    volume: '58.4M', marketCap: '$2.98T', high52: '$199.62', low52: '$164.08',
+    verdict: 'BULLISH', verdictSub: 'Strong institutional accumulation detected',
+    confidence: 76,
+    analysis: `<strong>Apple</strong> continues to demonstrate remarkable resilience in a volatile macro environment. Our AI models detect <strong>sustained institutional buying pressure</strong> across multiple sessions, with a notable uptick in options call volume suggesting smart money positioning for upside. The recent services revenue beat has <strong>re-rated the stock's valuation ceiling</strong>, and technical structure shows a clean bullish flag formation. Key catalysts include Vision Pro adoption data and the upcoming AI integration announcement. Our sentiment engine shows <strong>overwhelmingly positive</strong> coverage from 847 tracked news sources.`,
+    signals: [{n:'RSI(14)', v:58, color:'#00f5c4'}, {n:'MACD', v:72, color:'#00f5c4'}, {n:'BB%', v:65, color:'#f0b429'}, {n:'EMA200', v:84, color:'#00f5c4'}, {n:'Volume', v:61, color:'#f0b429'}],
+    predictions: [{t:'24H', price:'$194.80', up:true, conf:'73%'}, {t:'7D', price:'$198.20', up:true, conf:'68%'}, {t:'30D', price:'$205.50', up:true, conf:'58%'}, {t:'90D', price:'$218.00', up:true, conf:'49%'}],
+    sentiment: [{icon:'📰', src:'NEWS', v:78, up:true}, {icon:'𝕏', src:'SOCIAL', v:65, up:true}, {icon:'📊', src:'ANALYST', v:82, up:true}],
+    risk: 28,
+    riskText: 'Low-to-moderate risk. Strong balance sheet and cash flows provide significant downside protection. Primary risks: macro slowdown, China revenue exposure, and regulatory scrutiny of App Store.',
+    levels: [{type:'resistance', label:'R1', price:'$195.40'}, {type:'resistance', label:'R2', price:'$199.62'}, {type:'support', label:'S1', price:'$189.20'}, {type:'support', label:'S2', price:'$183.50'}]
+  },
+  BTC: {
+    name: 'Bitcoin', type: 'crypto', price: 94320, change: +2218, changePct: +2.41,
+    volume: '$42.8B', marketCap: '$1.85T', high52: '$108,400', low52: '$38,500',
+    verdict: 'STRONG BUY', verdictSub: 'Halving cycle + ETF inflows creating perfect storm',
+    confidence: 82,
+    analysis: `<strong>Bitcoin</strong> is entering what our models classify as a <strong>Phase 3 Bull Cycle</strong> — historically the most explosive phase post-halving. Spot ETF inflows have reached a critical inflection point with <strong>sustained $400M+ daily demand</strong> outpacing miner supply by 3.8x. On-chain metrics reveal <strong>historically low exchange reserves</strong>, suggesting reduced sell pressure from long-term holders. Our NLP engine has analyzed 12,400+ news articles and social posts, finding <strong>institutional narrative dominance</strong> — a leading indicator of price expansion. Macro tailwinds from potential rate cuts add further fuel.`,
+    signals: [{n:'RSI(14)', v:67, color:'#f0b429'}, {n:'MACD', v:81, color:'#00f5c4'}, {n:'On-Chain', v:88, color:'#00f5c4'}, {n:'Whale Flow', v:74, color:'#00f5c4'}, {n:'Dominance', v:70, color:'#f0b429'}],
+    predictions: [{t:'24H', price:'$96,800', up:true, conf:'69%'}, {t:'7D', price:'$102,400', up:true, conf:'65%'}, {t:'30D', price:'$118,000', up:true, conf:'57%'}, {t:'90D', price:'$145,000', up:true, conf:'44%'}],
+    sentiment: [{icon:'📰', src:'NEWS', v:84, up:true}, {icon:'𝕏', src:'SOCIAL', v:91, up:true}, {icon:'⛓', src:'ON-CHAIN', v:87, up:true}],
+    risk: 55,
+    riskText: 'Medium risk. While bullish momentum is strong, BTC remains susceptible to regulatory shocks, leveraged long liquidations, and macro sentiment reversals. Size positions accordingly.',
+    levels: [{type:'resistance', label:'R1', price:'$100,000'}, {type:'resistance', label:'R2', price:'$108,400'}, {type:'support', label:'S1', price:'$89,000'}, {type:'support', label:'S2', price:'$82,400'}]
+  },
+  ETH: {
+    name: 'Ethereum', type: 'crypto', price: 3280, change: -26.4, changePct: -0.80,
+    volume: '$18.2B', marketCap: '$394B', high52: '$4,090', low52: '$1,520',
+    verdict: 'NEUTRAL', verdictSub: 'Consolidation phase — watching for breakout',
+    confidence: 61,
+    analysis: `<strong>Ethereum</strong> is navigating a complex consolidation after its recent ATH push failed at <strong>$4,100 resistance</strong>. Our AI models detect elevated net outflows from ETH spot ETFs over the past 8 sessions, creating short-term headwinds. However, the <strong>Dencun upgrade aftermath</strong> has dramatically cut Layer 2 fees, boosting ecosystem activity metrics to all-time highs. Staking yields remain attractive at ~4.2% APY, providing a natural price floor. Our models see this as a <strong>healthy consolidation</strong> within a broader bull market — the risk/reward for patient accumulation remains favorable. Watch the $3,150 support zone closely.`,
+    signals: [{n:'RSI(14)', v:45, color:'#f0b429'}, {n:'MACD', v:38, color:'#ff3b6b'}, {n:'Staking', v:72, color:'#00f5c4'}, {n:'L2 TVL', v:80, color:'#00f5c4'}, {n:'ETF Flow', v:30, color:'#ff3b6b'}],
+    predictions: [{t:'24H', price:'$3,210', up:false, conf:'54%'}, {t:'7D', price:'$3,390', up:true, conf:'58%'}, {t:'30D', price:'$3,750', up:true, conf:'51%'}, {t:'90D', price:'$4,400', up:true, conf:'43%'}],
+    sentiment: [{icon:'📰', src:'NEWS', v:52, up:true}, {icon:'𝕏', src:'SOCIAL', v:58, up:true}, {icon:'⛓', src:'ON-CHAIN', v:66, up:true}],
+    risk: 48,
+    riskText: 'Medium risk. Near-term price action is uncertain but fundamentals remain strong. The primary risk is continued underperformance relative to BTC in this cycle phase.',
+    levels: [{type:'resistance', label:'R1', price:'$3,480'}, {type:'resistance', label:'R2', price:'$3,800'}, {type:'support', label:'S1', price:'$3,150'}, {type:'support', label:'S2', price:'$2,900'}]
+  },
+  TSLA: {
+    name: 'Tesla Inc.', type: 'stock', price: 238.70, change: -3.65, changePct: -1.51,
+    volume: '$92.1M', marketCap: '$760B', high52: '$299.29', low52: '$138.80',
+    verdict: 'BEARISH', verdictSub: 'Delivery misses + margin compression weigh',
+    confidence: 68,
+    analysis: `<strong>Tesla</strong> faces mounting headwinds that our AI models classify as <strong>structural rather than cyclical</strong>. The Q4 delivery miss triggered a significant re-rating of growth expectations, and our NLP analysis of 3,200+ earnings call transcripts reveals <strong>persistent analyst concern</strong> around margin compression from aggressive price cuts. The EV market is becoming increasingly competitive, with BYD surpassing Tesla in global sales — a trend our models flag as a <strong>significant long-term risk</strong>. Near-term, technical structure shows a bearish descending channel. The FSD autonomy story remains a potential game-changer but faces regulatory timeline risks.`,
+    signals: [{n:'RSI(14)', v:38, color:'#ff3b6b'}, {n:'MACD', v:25, color:'#ff3b6b'}, {n:'BB%', v:22, color:'#ff3b6b'}, {n:'Delivery', v:35, color:'#ff3b6b'}, {n:'Short %', v:60, color:'#f0b429'}],
+    predictions: [{t:'24H', price:'$235.20', up:false, conf:'61%'}, {t:'7D', price:'$228.80', up:false, conf:'55%'}, {t:'30D', price:'$215.00', up:false, conf:'47%'}, {t:'90D', price:'$245.00', up:true, conf:'40%'}],
+    sentiment: [{icon:'📰', src:'NEWS', v:35, up:false}, {icon:'𝕏', src:'SOCIAL', v:48, up:true}, {icon:'📊', src:'ANALYST', v:42, up:false}],
+    risk: 72,
+    riskText: 'High risk. Elevated short interest, execution uncertainty, and CEO distraction with other ventures creates significant volatility. Only suitable for high-risk tolerance traders.',
+    levels: [{type:'resistance', label:'R1', price:'$248.00'}, {type:'resistance', label:'R2', price:'$260.50'}, {type:'support', label:'S1', price:'$230.00'}, {type:'support', label:'S2', price:'$218.40'}]
+  },
+  NVDA: {
+    name: 'NVIDIA Corp.', type: 'stock', price: 875.40, change: +26.42, changePct: +3.11,
+    volume: '$45.2M', marketCap: '$2.16T', high52: '$974.00', low52: '$373.10',
+    verdict: 'STRONG BUY', verdictSub: 'AI infrastructure supercycle in full force',
+    confidence: 88,
+    analysis: `<strong>NVIDIA</strong> represents what our models classify as a <strong>generational investment opportunity</strong> — the picks-and-shovels play on the AI revolution. Blackwell GPU demand continues to massively outpace supply, with enterprise customers including hyperscalers placing orders <strong>12-18 months in advance</strong>. Revenue estimates have been revised upward 7 consecutive quarters. Our proprietary supply chain intelligence model detects <strong>unprecedented semiconductor order backlogs</strong> at TSMC for NVIDIA's next-gen products. Data center revenue is on track for a $100B+ annual run rate. Competitive moats from CUDA ecosystem make disruption nearly impossible in the near term.`,
+    signals: [{n:'RSI(14)', v:71, color:'#f0b429'}, {n:'MACD', v:88, color:'#00f5c4'}, {n:'Revenue', v:95, color:'#00f5c4'}, {n:'Margin', v:90, color:'#00f5c4'}, {n:'Growth', v:92, color:'#00f5c4'}],
+    predictions: [{t:'24H', price:'$892.00', up:true, conf:'72%'}, {t:'7D', price:'$920.00', up:true, conf:'67%'}, {t:'30D', price:'$975.00', up:true, conf:'60%'}, {t:'90D', price:'$1,100', up:true, conf:'51%'}],
+    sentiment: [{icon:'📰', src:'NEWS', v:92, up:true}, {icon:'𝕏', src:'SOCIAL', v:88, up:true}, {icon:'📊', src:'ANALYST', v:95, up:true}],
+    risk: 40,
+    riskText: 'Medium risk despite strong fundamentals. Valuation is extended and the stock is vulnerable to rotation if AI investment sentiment shifts. Export restrictions to China remain a key risk to monitor.',
+    levels: [{type:'resistance', label:'R1', price:'$920.00'}, {type:'resistance', label:'R2', price:'$974.00'}, {type:'support', label:'S1', price:'$840.00'}, {type:'support', label:'S2', price:'$800.00'}]
+  },
+  SOL: {
+    name: 'Solana', type: 'crypto', price: 178.90, change: +7.23, changePct: +4.21,
+    volume: '$8.4B', marketCap: '$82B', high52: '$260.00', low52: '$54.00',
+    verdict: 'BULLISH', verdictSub: 'DeFi + meme coin ecosystem driving network activity',
+    confidence: 71,
+    analysis: `<strong>Solana</strong> has emerged as the <strong>high-performance chain of choice</strong> for DeFi and consumer crypto applications. Our on-chain analytics detect daily active addresses hitting 6-month highs, with DEX volume surpassing Ethereum mainnet on 12 of the last 30 days — a remarkable milestone. The meme coin meta has <strong>driven unprecedented fee revenue</strong>, creating a positive feedback loop for SOL stakers. Our models identify institutional validator participation as a key bullish signal. The upcoming Firedancer client upgrade is expected to further increase throughput to <strong>1 million TPS</strong>, a technological leap that could attract new enterprise use cases.`,
+    signals: [{n:'RSI(14)', v:63, color:'#f0b429'}, {n:'MACD', v:75, color:'#00f5c4'}, {n:'DEX Vol', v:85, color:'#00f5c4'}, {n:'Active Addr', v:78, color:'#00f5c4'}, {n:'Staking', v:68, color:'#00f5c4'}],
+    predictions: [{t:'24H', price:'$184.50', up:true, conf:'66%'}, {t:'7D', price:'$195.00', up:true, conf:'61%'}, {t:'30D', price:'$225.00', up:true, conf:'53%'}, {t:'90D', price:'$280.00', up:true, conf:'45%'}],
+    sentiment: [{icon:'📰', src:'NEWS', v:76, up:true}, {icon:'𝕏', src:'SOCIAL', v:83, up:true}, {icon:'⛓', src:'ON-CHAIN', v:80, up:true}],
+    risk: 62,
+    riskText: 'Medium-high risk. While momentum is strong, Solana has experienced network outages historically. High beta to BTC means amplified drawdowns in risk-off environments.',
+    levels: [{type:'resistance', label:'R1', price:'$190.00'}, {type:'resistance', label:'R2', price:'$210.00'}, {type:'support', label:'S1', price:'$165.00'}, {type:'support', label:'S2', price:'$148.00'}]
+  },
+  MSFT: {
+    name: 'Microsoft Corp.', type: 'stock', price: 415.20, change: +2.48, changePct: +0.60,
+    volume: '$22.8M', marketCap: '$3.08T', high52: '$468.35', low52: '$362.90',
+    verdict: 'BULLISH', verdictSub: 'Azure AI growth inflecting sharply upward',
+    confidence: 79,
+    analysis: `<strong>Microsoft</strong> is executing flawlessly on its <strong>AI monetization strategy</strong>. Azure AI growth has reaccelerated to 31% YoY, driven by Copilot integrations across the entire product suite. Our enterprise survey data shows <strong>unprecedented enterprise adoption rates</strong> for Microsoft 365 Copilot — 64% of F500 companies now have active Copilot deployments. The OpenAI partnership provides a durable technological edge that competitors will struggle to match. Our DCF models suggest the stock is fairly valued at current prices but has <strong>meaningful upside</strong> if AI revenue growth continues to outpace expectations. A low-volatility compounder for institutional portfolios.`,
+    signals: [{n:'RSI(14)', v:54, color:'#f0b429'}, {n:'MACD', v:61, color:'#00f5c4'}, {n:'Cloud', v:78, color:'#00f5c4'}, {n:'Copilot', v:70, color:'#00f5c4'}, {n:'Margins', v:82, color:'#00f5c4'}],
+    predictions: [{t:'24H', price:'$417.50', up:true, conf:'64%'}, {t:'7D', price:'$422.00', up:true, conf:'60%'}, {t:'30D', price:'$438.00', up:true, conf:'54%'}, {t:'90D', price:'$460.00', up:true, conf:'47%'}],
+    sentiment: [{icon:'📰', src:'NEWS', v:80, up:true}, {icon:'𝕏', src:'SOCIAL', v:72, up:true}, {icon:'📊', src:'ANALYST', v:88, up:true}],
+    risk: 24,
+    riskText: 'Low risk. Exceptional balance sheet, recurring revenue model, and diversified business lines make MSFT one of the safest large-cap technology holdings.',
+    levels: [{type:'resistance', label:'R1', price:'$430.00'}, {type:'resistance', label:'R2', price:'$468.35'}, {type:'support', label:'S1', price:'$400.00'}, {type:'support', label:'S2', price:'$385.00'}]
+  },
+  AMZN: {
+    name: 'Amazon.com Inc.', type: 'stock', price: 189.40, change: +1.68, changePct: +0.90,
+    volume: '$38.6M', marketCap: '$1.99T', high52: '$201.20', low52: '$144.05',
+    verdict: 'BULLISH', verdictSub: 'AWS re-acceleration + margin expansion story intact',
+    confidence: 74,
+    analysis: `<strong>Amazon</strong> is at an <strong>inflection point</strong> that our models have been tracking for 3 quarters. AWS growth is re-accelerating after a normalization period, driven by generative AI workloads that are structurally more profitable than traditional cloud. Our cost structure models show <strong>operating margins expanding by 200-300bps annually</strong> as fulfillment automation investments bear fruit. Advertising revenue — now a $50B+ business — continues to take share from traditional media. The combination of AWS AI tailwinds, advertising dominance, and retail margin improvement creates a compelling multi-year earnings growth story. Consensus estimates appear <strong>overly conservative</strong> by our models' projections.`,
+    signals: [{n:'RSI(14)', v:57, color:'#f0b429'}, {n:'MACD', v:66, color:'#00f5c4'}, {n:'AWS', v:80, color:'#00f5c4'}, {n:'Ad Rev', v:75, color:'#00f5c4'}, {n:'Margins', v:72, color:'#00f5c4'}],
+    predictions: [{t:'24H', price:'$191.20', up:true, conf:'67%'}, {t:'7D', price:'$194.80', up:true, conf:'62%'}, {t:'30D', price:'$201.00', up:true, conf:'55%'}, {t:'90D', price:'$215.00', up:true, conf:'46%'}],
+    sentiment: [{icon:'📰', src:'NEWS', v:77, up:true}, {icon:'𝕏', src:'SOCIAL', v:69, up:true}, {icon:'📊', src:'ANALYST', v:84, up:true}],
+    risk: 30,
+    riskText: 'Low-moderate risk. Diversified revenue streams and market leadership in cloud and e-commerce provide resilience. Regulatory antitrust risk is a long-term overhang to monitor.',
+    levels: [{type:'resistance', label:'R1', price:'$195.00'}, {type:'resistance', label:'R2', price:'$201.20'}, {type:'support', label:'S1', price:'$183.00'}, {type:'support', label:'S2', price:'$175.00'}]
+  }
+};
+
+const loadingMessages = [
+  'SCANNING MARKET MICROSTRUCTURE...',
+  'ANALYZING ON-CHAIN SIGNALS...',
+  'PROCESSING SENTIMENT DATA...',
+  'RUNNING QUANTITATIVE MODELS...',
+  'CALIBRATING PREDICTION ENGINE...',
+  'COMPUTING RISK PARAMETERS...',
+  'FINALIZING AI VERDICT...'
+];
+
+function quickPick(symbol) {
+  document.getElementById('tickerInput').value = symbol;
+  runAnalysis();
+}
+
+async function runAnalysis() {
+  const raw = document.getElementById('tickerInput').value.trim().toUpperCase();
+  if (!raw) return;
+
+  const btn = document.getElementById('analyzeBtn');
+  btn.disabled = true;
+
+  // Hide results, show loading
+  document.getElementById('resultsZone').classList.remove('active');
+  const loadingZone = document.getElementById('loadingZone');
+  loadingZone.classList.add('active');
+
+  // Cycle loading messages
+  let msgIdx = 0;
+  const msgEl = document.getElementById('loadingText');
+  const msgInterval = setInterval(() => {
+    msgEl.textContent = loadingMessages[msgIdx % loadingMessages.length];
+    msgIdx++;
+  }, 600);
+
+  // Simulate AI processing time
+  await sleep(4200);
+  clearInterval(msgInterval);
+  loadingZone.classList.remove('active');
+
+  // Get data (use known or generate for unknown)
+  const data = assetData[raw] || generateData(raw);
+  renderResults(data);
+
+  btn.disabled = false;
+}
+
+function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+function generateData(sym) {
+  const price = (Math.random() * 800 + 20).toFixed(2);
+  const changePct = ((Math.random() - 0.48) * 6).toFixed(2);
+  const change = (price * changePct / 100).toFixed(2);
+  const verdicts = ['BULLISH', 'BEARISH', 'NEUTRAL', 'STRONG BUY'];
+  const verdict = verdicts[Math.floor(Math.random() * verdicts.length)];
+  const confidence = Math.floor(Math.random() * 35 + 50);
+  return {
+    name: sym, type: 'stock', price: parseFloat(price),
+    change: parseFloat(change), changePct: parseFloat(changePct),
+    volume: `${(Math.random()*50+5).toFixed(1)}M`, marketCap: `$${(Math.random()*500+10).toFixed(0)}B`,
+    high52: `$${(parseFloat(price)*1.3).toFixed(2)}`, low52: `$${(parseFloat(price)*0.65).toFixed(2)}`,
+    verdict, verdictSub: 'Analyzing proprietary market signals',
+    confidence,
+    analysis: `<strong>${sym}</strong> shows a complex technical picture that our AI models are actively monitoring. Multiple quantitative signals are converging to suggest this asset is approaching a <strong>critical decision point</strong>. Our natural language processing engine has analyzed thousands of news articles and social media posts, revealing <strong>evolving market narratives</strong> that could catalyze significant price movement in either direction. Key levels are being tested with increasing volume, and options market positioning suggests sophisticated participants are hedging for <strong>elevated volatility</strong> in the near term.`,
+    signals: [
+      {n:'RSI(14)', v: Math.floor(Math.random()*60+20), color:'#f0b429'},
+      {n:'MACD', v: Math.floor(Math.random()*80+10), color:'#00f5c4'},
+      {n:'EMA200', v: Math.floor(Math.random()*70+20), color:'#00f5c4'},
+      {n:'Volume', v: Math.floor(Math.random()*60+20), color:'#f0b429'},
+      {n:'BB%', v: Math.floor(Math.random()*80+10), color:'#f0b429'},
+    ],
+    predictions: [
+      {t:'24H', price:`$${(parseFloat(price)*1.01).toFixed(2)}`, up:true, conf:'62%'},
+      {t:'7D', price:`$${(parseFloat(price)*1.04).toFixed(2)}`, up:true, conf:'55%'},
+      {t:'30D', price:`$${(parseFloat(price)*1.10).toFixed(2)}`, up:true, conf:'47%'},
+      {t:'90D', price:`$${(parseFloat(price)*1.18).toFixed(2)}`, up:true, conf:'38%'},
+    ],
+    sentiment: [{icon:'📰', src:'NEWS', v:Math.floor(Math.random()*50+30), up:true}, {icon:'𝕏', src:'SOCIAL', v:Math.floor(Math.random()*50+30), up:true}, {icon:'📊', src:'ANALYST', v:Math.floor(Math.random()*50+40), up:true}],
+    risk: Math.floor(Math.random()*60+20),
+    riskText: 'Risk level reflects current market conditions and volatility profile. Always use stop-losses and size positions according to your risk tolerance.',
+    levels: [
+      {type:'resistance', label:'R1', price:`$${(parseFloat(price)*1.05).toFixed(2)}`},
+      {type:'resistance', label:'R2', price:`$${(parseFloat(price)*1.12).toFixed(2)}`},
+      {type:'support', label:'S1', price:`$${(parseFloat(price)*0.96).toFixed(2)}`},
+      {type:'support', label:'S2', price:`$${(parseFloat(price)*0.90).toFixed(2)}`},
+    ]
+  };
+}
+
+function renderResults(data) {
+  const isUp = data.changePct >= 0;
+  const verdictClass = data.verdict.includes('BUY') || data.verdict === 'BULLISH' ? 'bullish'
+    : data.verdict === 'BEARISH' ? 'bearish' : 'neutral';
+
+  // Verdict banner
+  const banner = document.getElementById('verdictBanner');
+  banner.className = `verdict-banner ${verdictClass}`;
+  document.getElementById('verdictSignal').textContent = data.verdict;
+  document.getElementById('verdictSub').textContent = data.verdictSub;
+
+  // Score ring
+  const fillColor = verdictClass === 'bullish' ? 'var(--accent)' : verdictClass === 'bearish' ? 'var(--accent2)' : 'var(--accent3)';
+  const fill = document.getElementById('scoreFill');
+  fill.setAttribute('stroke', fillColor);
+  document.getElementById('scoreNumber').textContent = data.confidence + '%';
+  setTimeout(() => {
+    const offset = 239 - (239 * data.confidence / 100);
+    fill.style.strokeDashoffset = offset;
+  }, 300);
+
+  // Stats row
+  const statsRow = document.getElementById('statsRow');
+  const priceFmt = data.price >= 1000 ? `$${data.price.toLocaleString()}` : `$${data.price}`;
+  statsRow.innerHTML = `
+    <div class="card">
+      <div class="card-label"><div class="card-label-dot"></div>CURRENT PRICE</div>
+      <div class="big-number ${isUp ? 'up' : 'down'}">${priceFmt}</div>
+      <div class="sub-number">${data.name}</div>
+    </div>
+    <div class="card">
+      <div class="card-label"><div class="card-label-dot"></div>24H CHANGE</div>
+      <div class="big-number ${isUp ? 'up' : 'down'}">${isUp ? '+' : ''}${data.changePct}%</div>
+      <div class="sub-number">${isUp ? '+' : ''}$${Math.abs(data.change).toFixed(2)} today</div>
+    </div>
+    <div class="card">
+      <div class="card-label"><div class="card-label-dot"></div>VOLUME / MKT CAP</div>
+      <div class="big-number neutral">${data.volume}</div>
+      <div class="sub-number">Mkt Cap: ${data.marketCap}</div>
+    </div>
+  `;
+
+  // Analysis
+  document.getElementById('analysisText').innerHTML = data.analysis;
+
+  // Predictions
+  const predList = document.getElementById('predictionList');
+  predList.innerHTML = data.predictions.map(p => `
+    <div class="prediction-item">
+      <div class="pred-time">${p.t}</div>
+      <div class="pred-arrow">${p.up ? '↗' : '↘'}</div>
+      <div class="pred-price" style="color: ${p.up ? 'var(--accent)' : 'var(--accent2)'}">${p.price}</div>
+      <div class="pred-confidence">CONF<span>${p.conf}</span></div>
+    </div>
+  `).join('');
+
+  // Signals
+  const signalGrid = document.getElementById('signalGrid');
+  signalGrid.innerHTML = data.signals.map(s => `
+    <div class="signal-row">
+      <div class="signal-name">${s.n}</div>
+      <div class="signal-bar-track">
+        <div class="signal-bar-fill" data-w="${s.v}" style="background:${s.color};"></div>
+      </div>
+      <div class="signal-val" style="color:${s.color};">${s.v}</div>
+    </div>
+  `).join('');
+
+  // Sentiment
+  const sentRows = document.getElementById('sentimentRows');
+  sentRows.innerHTML = data.sentiment.map(s => `
+    <div class="sentiment-row">
+      <div class="sentiment-icon">${s.icon}</div>
+      <div class="sentiment-source">${s.src}</div>
+      <div class="sentiment-bar-outer">
+        <div class="sentiment-bar-inner" data-w="${s.v}" style="background: ${s.up ? 'var(--accent)' : 'var(--accent2)'};"></div>
+      </div>
+      <div class="sentiment-pct" style="color:${s.up ? 'var(--accent)' : 'var(--accent2)'}">${s.v}%</div>
+    </div>
+  `).join('');
+
+  // Risk needle
+  const riskPct = data.risk;
+  document.getElementById('riskNeedle').style.left = riskPct + '%';
+  document.getElementById('riskText').textContent = data.riskText;
+
+  // Key levels
+  const levelsGrid = document.getElementById('levelsGrid');
+  levelsGrid.innerHTML = data.levels.map(l => `
+    <div class="level-item ${l.type}">
+      <div class="level-type">${l.type} ${l.label}</div>
+      <div class="level-price">${l.price}</div>
+    </div>
+  `).join('');
+
+  // Show results
+  const resultsZone = document.getElementById('resultsZone');
+  resultsZone.classList.add('active');
+
+  // Animate bars after DOM update
+  setTimeout(() => {
+    document.querySelectorAll('.signal-bar-fill').forEach(el => {
+      el.style.width = el.dataset.w + '%';
+    });
+    document.querySelectorAll('.sentiment-bar-inner').forEach(el => {
+      el.style.width = el.dataset.w + '%';
+    });
+  }, 100);
+}
+
+// Allow Enter key
+document.getElementById('tickerInput').addEventListener('keydown', e => {
+  if (e.key === 'Enter') runAnalysis();
+});
+</script>
+</body>
+</html>
