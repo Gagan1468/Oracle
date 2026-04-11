@@ -671,6 +671,144 @@
   .resistance .level-price { color: var(--accent2); }
   .support .level-price { color: var(--accent); }
 
+
+  /* 3D SCROLLY STORY */
+  .scrolly-wrap {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    align-items: start;
+    margin: 14px 0 36px;
+    perspective: 1200px;
+  }
+
+  .scrolly-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .step-card {
+    background: linear-gradient(160deg, rgba(8,13,20,0.95), rgba(8,13,20,0.7));
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 18px;
+    min-height: 140px;
+    transform-style: preserve-3d;
+    transform: translateZ(0) rotateX(0deg) rotateY(0deg);
+    transition: transform 500ms cubic-bezier(.22,.61,.36,1), border-color 300ms ease, box-shadow 300ms ease, opacity 300ms ease;
+    opacity: 0.5;
+  }
+
+  .step-card h3 {
+    font-family: 'Syne', sans-serif;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+    font-size: 1rem;
+  }
+
+  .step-card p {
+    font-size: 0.74rem;
+    color: #89a5b5;
+    line-height: 1.8;
+  }
+
+  .step-index {
+    display: inline-block;
+    font-size: 0.62rem;
+    color: var(--muted);
+    letter-spacing: 2px;
+    margin-bottom: 10px;
+  }
+
+  .step-card.active {
+    opacity: 1;
+    border-color: rgba(0,245,196,0.6);
+    box-shadow: 0 25px 45px rgba(0, 0, 0, 0.35), 0 0 40px rgba(0,245,196,0.08);
+    transform: translateZ(35px) rotateX(2deg) rotateY(-1.5deg);
+  }
+
+  .stage-3d {
+    position: sticky;
+    top: 90px;
+    min-height: 360px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: radial-gradient(circle at 50% 10%, rgba(0,245,196,0.11), transparent 50%), var(--surface);
+    overflow: hidden;
+    transform-style: preserve-3d;
+  }
+
+  .stage-grid {
+    position: absolute;
+    inset: 0;
+    background-image: linear-gradient(rgba(0,245,196,0.08) 1px, transparent 1px), linear-gradient(90deg, rgba(0,245,196,0.08) 1px, transparent 1px);
+    background-size: 28px 28px;
+    transform: rotateX(65deg) translateZ(-40px) scale(1.4);
+    transform-origin: center 75%;
+    opacity: .35;
+  }
+
+  .stage-globe {
+    position: absolute;
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    left: 50%;
+    top: 52%;
+    transform: translate(-50%, -50%);
+    background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.35), rgba(0,245,196,0.15) 35%, rgba(0,245,196,0.02) 65%);
+    border: 1px solid rgba(0,245,196,0.35);
+    box-shadow: 0 0 50px rgba(0,245,196,0.25), inset 0 0 60px rgba(0,245,196,0.1);
+    animation: floatOrb 6s ease-in-out infinite;
+  }
+
+  @keyframes floatOrb {
+    0%,100% { transform: translate(-50%, -50%) translateY(0);}
+    50% { transform: translate(-50%, -50%) translateY(-14px);}
+  }
+
+  .stage-label {
+    position: absolute;
+    left: 22px;
+    bottom: 20px;
+    font-size: 0.65rem;
+    letter-spacing: 2px;
+    color: #8eb4c5;
+    text-transform: uppercase;
+    z-index: 3;
+  }
+
+  .stage-signal {
+    position: absolute;
+    right: 22px;
+    top: 22px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2rem;
+    letter-spacing: 3px;
+    color: var(--accent);
+    text-shadow: 0 0 24px rgba(0,245,196,0.35);
+    transition: transform 300ms ease, opacity 300ms ease;
+    z-index: 2;
+  }
+
+  .stage-ray {
+    position: absolute;
+    width: 2px;
+    height: 120px;
+    background: linear-gradient(to bottom, rgba(0,245,196,0.75), transparent);
+    left: 50%;
+    top: 32%;
+    transform: translateX(-50%);
+    filter: drop-shadow(0 0 8px rgba(0,245,196,0.4));
+    z-index: 1;
+  }
+
+  @media (max-width: 900px) {
+    .scrolly-wrap { grid-template-columns: 1fr; }
+    .stage-3d { position: relative; top: 0; min-height: 300px; }
+  }
+
   /* FOOTER */
   footer {
     margin-top: 60px;
@@ -772,6 +910,33 @@
       <div class="chip" onclick="quickPick('AMZN')">AMZN</div>
     </div>
   </div>
+
+  <section class="scrolly-wrap" id="scrollyWrap">
+    <div class="scrolly-steps">
+      <article class="step-card active" data-signal="SCAN" data-tone="var(--accent)">
+        <span class="step-index">STEP 01</span>
+        <h3>Market Context Mapping</h3>
+        <p>We ingest cross-market volatility, liquidity clusters, and macro prints to frame the current regime before any ticker-specific interpretation.</p>
+      </article>
+      <article class="step-card" data-signal="NLP" data-tone="var(--accent3)">
+        <span class="step-index">STEP 02</span>
+        <h3>Narrative Intelligence Layer</h3>
+        <p>News, social, and analyst transcripts are embedded and scored to separate signal from noise and highlight sentiment inflections early.</p>
+      </article>
+      <article class="step-card" data-signal="QUANT" data-tone="var(--accent2)">
+        <span class="step-index">STEP 03</span>
+        <h3>Probabilistic Forecast Engine</h3>
+        <p>Factor models and momentum structures are fused into scenario-weighted forecasts with confidence intervals and downside-first risk framing.</p>
+      </article>
+    </div>
+    <div class="stage-3d" id="stage3d">
+      <div class="stage-grid"></div>
+      <div class="stage-ray"></div>
+      <div class="stage-globe" id="stageGlobe"></div>
+      <div class="stage-signal" id="stageSignal">SCAN</div>
+      <div class="stage-label">Oracle 3D Scrollytelling Interface</div>
+    </div>
+  </section>
 
   <!-- Loading -->
   <div class="loading-zone" id="loadingZone">
@@ -1202,6 +1367,44 @@ function renderResults(data) {
     });
   }, 100);
 }
+
+
+function initScrolly() {
+  const cards = [...document.querySelectorAll('.step-card')];
+  const signalEl = document.getElementById('stageSignal');
+  const globe = document.getElementById('stageGlobe');
+  const stage = document.getElementById('stage3d');
+
+  const activate = (card) => {
+    cards.forEach(c => c.classList.remove('active'));
+    card.classList.add('active');
+    signalEl.textContent = card.dataset.signal;
+    signalEl.style.color = card.dataset.tone;
+    globe.style.borderColor = card.dataset.tone;
+    globe.style.boxShadow = `0 0 50px ${card.dataset.tone}55, inset 0 0 60px ${card.dataset.tone}33`;
+  };
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) activate(entry.target);
+    });
+  }, { threshold: 0.6 });
+
+  cards.forEach(card => observer.observe(card));
+
+  stage.addEventListener('mousemove', (e) => {
+    const r = stage.getBoundingClientRect();
+    const x = ((e.clientX - r.left) / r.width - 0.5) * 12;
+    const y = ((e.clientY - r.top) / r.height - 0.5) * -10;
+    stage.style.transform = `rotateX(${y}deg) rotateY(${x}deg)`;
+  });
+
+  stage.addEventListener('mouseleave', () => {
+    stage.style.transform = 'rotateX(0deg) rotateY(0deg)';
+  });
+}
+
+initScrolly();
 
 // Allow Enter key
 document.getElementById('tickerInput').addEventListener('keydown', e => {
